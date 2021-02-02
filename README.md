@@ -1,0 +1,1 @@
+Microservice example as a test task for Thryve
