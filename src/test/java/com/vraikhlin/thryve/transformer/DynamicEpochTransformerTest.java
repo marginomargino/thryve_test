@@ -15,7 +15,7 @@ import static com.vraikhlin.thryve.transformer.DynamicEpochTransformer.toEntitie
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@DisplayName("Dynamic Epoch Transformer Test")
+@DisplayName("DynamicEpoch Transformer Test")
 class DynamicEpochTransformerTest {
 
     public static final String USER_ID_1 = "User ID 1";

@@ -31,12 +31,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = DynamicEpochController.class)
-@DisplayName("Dynamic Epoch Controller Test")
+@DisplayName("DynamicEpoch Controller Test")
 class DynamicEpochControllerTest {
 
     private static final Long START_TIMESTAMP = 1605595957000L;
     private static final Long END_TIMESTAMP = 1605595998000L;
-    private static final Long HEART_RATE = 78L;
+    private static final Double HEART_RATE = 78D;
     private static final String USER_ID = "123456";
     private static final String DATA_SOURCE_ID = "8";
     private static final int DYNAMIC_VALUE_TYPE = 3000;
@@ -127,7 +127,7 @@ class DynamicEpochControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.startTimestampUnix", equalTo(START_TIMESTAMP)))
                 .andExpect(jsonPath("$.endTimestampUnix", equalTo(END_TIMESTAMP)))
-                .andExpect(jsonPath("$.averageHeartRate", equalTo(HEART_RATE.intValue())));
+                .andExpect(jsonPath("$.averageHeartRate", equalTo(HEART_RATE)));
     }
 
     private String getResourceContent(String resourceLocation) throws IOException {

@@ -4,14 +4,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 @Builder
 @AllArgsConstructor(onConstructor_ = @JsonCreator)
 public class HeartRateData {
 
-    Long averageHeartRate;
+    String userId;
+
+    Double averageHeartRate;
 
     @JsonProperty("startTimestampUnix")
     Long startTimestamp;
