@@ -39,8 +39,8 @@ public class DynamicEpochController {
 
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> postDynamicEpoch(@RequestBody List<DynamicEpoch> dynamicEpoches) {
-        service.persist(dynamicEpoches);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        int count = service.persist(dynamicEpoches);
+        return count > 0 ? new ResponseEntity<>(HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
