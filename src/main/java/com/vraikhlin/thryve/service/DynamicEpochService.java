@@ -1,6 +1,7 @@
 package com.vraikhlin.thryve.service;
 
 import com.vraikhlin.thryve.model.DynamicEpoch;
+import com.vraikhlin.thryve.model.DynamicEpochData;
 import com.vraikhlin.thryve.model.HeartRateData;
 import com.vraikhlin.thryve.persistence.DynamicEpochEntity;
 import com.vraikhlin.thryve.persistence.DynamicEpochRepository;
@@ -9,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
+import static com.vraikhlin.thryve.transformer.DynamicEpochTransformer.toDto;
 import static com.vraikhlin.thryve.transformer.DynamicEpochTransformer.toEntities;
 
 @Service
@@ -30,8 +34,13 @@ public class DynamicEpochService {
 
     }
 
-    public List<DynamicEpoch.Data> getEpochData(Long startTimestamp, Long endTimestamp, String userId, Integer dynamicValueType){
-        return Collections.emptyList();
+    public List<DynamicEpochData> getEpochData(Long startTimestamp, Long endTimestamp, String userId, Integer dynamicValueType){
+        if (Stream.of(startTimestamp, endTimestamp, userId, dynamicValueType).allMatch(Objects::isNull)){
+            return Collections.emptyList();
+            //TODO throw exception to be caught in ExceptionHandler
+        }
+        List<DynamicEpochEntity> entities = repository.getEpochData(startTimestamp, endTimestamp, userId, dynamicValueType);
+        return toDto(entities);
     }
 
     public HeartRateData getAverageHeartRate(Long startTimestamp, Long endTimestamp, String userId){

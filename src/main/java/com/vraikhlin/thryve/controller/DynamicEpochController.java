@@ -1,6 +1,7 @@
 package com.vraikhlin.thryve.controller;
 
 import com.vraikhlin.thryve.model.DynamicEpoch;
+import com.vraikhlin.thryve.model.DynamicEpochData;
 import com.vraikhlin.thryve.model.HeartRateData;
 import com.vraikhlin.thryve.service.DynamicEpochService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +45,11 @@ public class DynamicEpochController {
     }
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<DynamicEpoch.Data>> getDynamicEpoch(@RequestParam("startTimestampUnix") Long startTimestamp,
+    public ResponseEntity<List<DynamicEpochData>> getDynamicEpoch(@RequestParam("startTimestampUnix") Long startTimestamp,
                                                                    @RequestParam("endTimestampUnix") Long endTimestamp,
                                                                    @RequestParam("userId") String userId,
                                                                    @RequestParam("dynamicValueType") Integer dynamicValueType){
-        List<DynamicEpoch.Data> data = service.getEpochData(startTimestamp, endTimestamp, userId, dynamicValueType);
+        List<DynamicEpochData> data = service.getEpochData(startTimestamp, endTimestamp, userId, dynamicValueType);
         return ResponseEntity.ok(data);
     }
 

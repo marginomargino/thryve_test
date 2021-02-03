@@ -2,6 +2,7 @@ package com.vraikhlin.thryve.transformer;
 
 
 import com.vraikhlin.thryve.model.DynamicEpoch;
+import com.vraikhlin.thryve.model.DynamicEpochData;
 import com.vraikhlin.thryve.persistence.DynamicEpochEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.vraikhlin.thryve.transformer.DynamicEpochTransformer.toDto;
 import static com.vraikhlin.thryve.transformer.DynamicEpochTransformer.toEntities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -18,8 +20,8 @@ class DynamicEpochTransformerTest {
 
     public static final String USER_ID_1 = "User ID 1";
     private static final String USER_ID_2 = "User ID 2";
-    public static final String DATA_SOURCE_ID_1 = "Data Source ID 1";
-    public static final String DATA_SOURCE_ID_2 = "Data Source ID 2";
+    public static final String DATA_SOURCE_ID_1 = "DataPoint Source ID 1";
+    public static final String DATA_SOURCE_ID_2 = "DataPoint Source ID 2";
     public static final String VALUE_1 = "Value 1";
     public static final String VALUE_2 = "Value 2";
 
@@ -50,6 +52,27 @@ class DynamicEpochTransformerTest {
 
     }
 
+    @Test
+    @DisplayName("Test transform DynamicEpochEntity to DynamicEpochData")
+    void testTransformToDto() {
+
+        List<DynamicEpochEntity> entities = List.of(DynamicEpochEntity.builder()
+                .userId(USER_ID_1)
+                .dataSourceId(DATA_SOURCE_ID_1)
+                .value(VALUE_1)
+                .build());
+        List<DynamicEpochData> dtos = toDto(entities);
+
+        assertNotNull(dtos);
+        assertEquals(1, dtos.size());
+
+        DynamicEpochData dto = dtos.get(0);
+        assertEquals(USER_ID_1, dto.getUserId());
+        assertEquals(DATA_SOURCE_ID_1, dto.getDataSourceId());
+        assertEquals(VALUE_1, dto.getValue());
+
+    }
+
     private DynamicEpoch createDynamicEpoch(String userId) {
         return DynamicEpoch.builder()
                 .userId(userId)
@@ -64,11 +87,10 @@ class DynamicEpochTransformerTest {
         .build();
     }
 
-    private DynamicEpoch.Data createDataPoint(String value) {
-        return DynamicEpoch.Data.builder()
+    private DynamicEpoch.DataPoint createDataPoint(String value) {
+        return DynamicEpoch.DataPoint.builder()
                 .startTimestamp(1234567890L)
                 .endTimestamp(1234567891L)
-                .dynamicValueType(3000)
                 .value(value)
                 .build();
 

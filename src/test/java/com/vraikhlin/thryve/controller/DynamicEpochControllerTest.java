@@ -1,6 +1,6 @@
 package com.vraikhlin.thryve.controller;
 
-import com.vraikhlin.thryve.model.DynamicEpoch;
+import com.vraikhlin.thryve.model.DynamicEpochData;
 import com.vraikhlin.thryve.model.HeartRateData;
 import com.vraikhlin.thryve.service.DynamicEpochService;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +23,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -32,15 +31,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = DynamicEpochController.class)
-@DisplayName("DynamicEpoch Controller Test")
+@DisplayName("Dynamic Epoch Controller Test")
 class DynamicEpochControllerTest {
 
     private static final Long START_TIMESTAMP = 1605595957000L;
     private static final Long END_TIMESTAMP = 1605595998000L;
     private static final Long HEART_RATE = 78L;
     private static final String USER_ID = "123456";
+    private static final String DATA_SOURCE_ID = "8";
     private static final int DYNAMIC_VALUE_TYPE = 3000;
-    public static final String VALUE_TYPE = "LONG";
+    private static final String VALUE_TYPE = "LONG";
 
     @Autowired
     private MockMvc mvc;
@@ -55,7 +55,7 @@ class DynamicEpochControllerTest {
     @DisplayName("Test dynamic epoch post endpoint")
     void testDynamicEpochPost() throws Exception {
 
-        doNothing().when(service).persist(anyList());
+        when(service.persist(anyList())).thenReturn(1);
         String postPayload = getResourceContent("classpath:post_payload.json");
 
         mvc.perform(post(DYNAMIC_EPOCHS_ENDPOINT)
@@ -76,7 +76,9 @@ class DynamicEpochControllerTest {
     @DisplayName("Test dynamic epoch get endpoint")
     void testDynamicEpochGet() throws Exception {
 
-        List<DynamicEpoch.Data> data = List.of(DynamicEpoch.Data.builder()
+        List<DynamicEpochData> data = List.of(DynamicEpochData.builder()
+                .userId(USER_ID)
+                .dataSourceId(DATA_SOURCE_ID)
                 .startTimestamp(START_TIMESTAMP)
                 .endTimestamp(END_TIMESTAMP)
                 .createdAt(START_TIMESTAMP)
@@ -96,6 +98,8 @@ class DynamicEpochControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$.[0].userId", equalTo(USER_ID)))
+                .andExpect(jsonPath("$.[0].dataSourceId", equalTo(DATA_SOURCE_ID)))
                 .andExpect(jsonPath("$.[0].startTimestampUnix", equalTo(START_TIMESTAMP)))
                 .andExpect(jsonPath("$.[0].endTimestampUnix", equalTo(END_TIMESTAMP)))
                 .andExpect(jsonPath("$.[0].createdAtUnix", equalTo(START_TIMESTAMP)))

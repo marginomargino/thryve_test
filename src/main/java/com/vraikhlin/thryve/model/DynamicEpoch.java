@@ -27,14 +27,14 @@ public class DynamicEpoch {
 
         @JsonProperty("dataSource")
         String dataSourceId;
-        List<Data> data;
+        List<DataPoint> data;
 
     }
 
     @Value
     @Builder
     @AllArgsConstructor(onConstructor_ = @JsonCreator)
-    public static class Data {
+    public static class DataPoint {
 
         @NonNull
         @JsonProperty("startTimestampUnix")
