@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: "db_url"
+    username: "db_username"
+    password: "db_password"
+  jpa:
+    properties:
+      hibernate:
+        default_schema: thryve_test
+  flyway:
+    schemas: thryve_test
+
+---
+spring.config.activate.on-profile: local
+
+spring:
+  datasource:
+    url: "jdbc:postgresql://127.0.0.1:5432/local_thryve_test_db"
+    username: "postgres"
+    password: "postgres"
+
