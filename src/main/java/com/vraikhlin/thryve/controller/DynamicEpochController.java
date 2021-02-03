@@ -18,12 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+
 import static com.vraikhlin.thryve.controller.DynamicEpochController.DYNAMIC_EPOCHS_ENDPOINT;
 
 @RestController
 @RequestMapping(DYNAMIC_EPOCHS_ENDPOINT)
 @Validated
 public class DynamicEpochController {
+
+    //TODO Add ExceptionHandler
 
     @Autowired
     public DynamicEpochController(DynamicEpochService service) {
@@ -45,7 +48,7 @@ public class DynamicEpochController {
                                                                    @RequestParam("endTimestampUnix") Long endTimestamp,
                                                                    @RequestParam("userId") String userId,
                                                                    @RequestParam("dynamicValueType") Integer dynamicValueType){
-        List<DynamicEpoch.Data> data = service.retrieve(startTimestamp, endTimestamp, userId, dynamicValueType);
+        List<DynamicEpoch.Data> data = service.getEpochData(startTimestamp, endTimestamp, userId, dynamicValueType);
         return ResponseEntity.ok(data);
     }
 

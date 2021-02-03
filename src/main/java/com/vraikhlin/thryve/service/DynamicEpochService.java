@@ -14,7 +14,7 @@ public class DynamicEpochService {
 
     }
 
-    public List<DynamicEpoch.Data> retrieve(Long startTimestamp, Long endTimestamp, String userId, Integer dynamicValueType){
+    public List<DynamicEpoch.Data> getEpochData(Long startTimestamp, Long endTimestamp, String userId, Integer dynamicValueType){
         return Collections.emptyList();
     }
 

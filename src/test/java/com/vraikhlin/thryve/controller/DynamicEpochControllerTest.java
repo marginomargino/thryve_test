@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = DynamicEpochController.class)
-@DisplayName("DynamicEpochControllerTest")
+@DisplayName("DynamicEpoch Controller Test")
 class DynamicEpochControllerTest {
 
     private static final Long START_TIMESTAMP = 1605595957000L;
@@ -85,7 +85,7 @@ class DynamicEpochControllerTest {
                 .value(String.valueOf(HEART_RATE))
                 .build());
 
-        when(service.retrieve(eq(START_TIMESTAMP), eq(END_TIMESTAMP), eq(USER_ID), eq(DYNAMIC_VALUE_TYPE)))
+        when(service.getEpochData(eq(START_TIMESTAMP), eq(END_TIMESTAMP), eq(USER_ID), eq(DYNAMIC_VALUE_TYPE)))
                 .thenReturn(data);
 
         mvc.perform(get(DYNAMIC_EPOCHS_ENDPOINT)
